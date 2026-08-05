@@ -29,7 +29,7 @@
     "contains_non_public_inventory": true,
     "digest": "sha256:a26f28a8e187109ba3f3fb1bc9d43a18c0f52c713995830154b03bdae4e5a84d",
     "path": "owners/quaestor-ledger.json",
-    "repository": "ORESoftware/project-registry"
+    "repository": "approved-private-registry"
   },
   "relationships": [
     {
