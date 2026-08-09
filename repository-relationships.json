@@ -1,0 +1,138 @@
+{
+  "$schema": "./repository-relationships.schema.json",
+  "audience": "public",
+  "generated": {
+    "complete_for_visibility": "public",
+    "generated_at": "2026-08-05T21:07:32Z",
+    "generator_version": "2026-08-04.1",
+    "inventory_digest": "sha256:ea7a725a35ae6232ae881a0321204d89da32e81ed500594aeef0ffd768eb57a7",
+    "managed_by": "ore-repository-relationship-rollout",
+    "omitted_repository_count": 10,
+    "private_repositories_omitted": true,
+    "source": "GitHub GraphQL repository inventory plus reviewed manual declarations"
+  },
+  "owner": {
+    "account_type": "organization",
+    "dotgithub_repository": "quaestor-ledger/.github",
+    "github_id": "306201356",
+    "linear_project": {
+      "id": "aced9d50-40ea-4634-9574-3a6afa49c4ad",
+      "name": "github.com/quaestor-ledger",
+      "team_id": "eb8ab169-5afe-4b6f-9cab-3f2aa3e887dc",
+      "url": "https://linear.app/denman/project/githubcomquaestor-ledger-a8cd440b3acc",
+      "workspace": "denman"
+    },
+    "login": "quaestor-ledger",
+    "mapping_id": "context:quaestor-ledger"
+  },
+  "private_registry": {
+    "contains_non_public_inventory": true,
+    "digest": "sha256:a26f28a8e187109ba3f3fb1bc9d43a18c0f52c713995830154b03bdae4e5a84d",
+    "path": "owners/quaestor-ledger.json",
+    "repository": "approved-private-registry"
+  },
+  "relationships": [
+    {
+      "confidence": 1.0,
+      "evidence": [
+        {
+          "kind": "github-owner-membership",
+          "source": "GitHub GraphQL repository inventory"
+        }
+      ],
+      "from": "quaestor-ledger/.github",
+      "id": "sha256:899851f71ae7346eff870279fc4fb374d55982fd9ff4af4d38201b7fd0c1c0a5",
+      "notes": "Organization .github policy and community-health defaults govern this sibling repository.",
+      "required": true,
+      "scope": "organization",
+      "status": "declared",
+      "to": "quaestor-ledger/quaestor-ledger-e2e",
+      "type": "governs"
+    },
+    {
+      "confidence": 1.0,
+      "evidence": [
+        {
+          "kind": "github-owner-membership",
+          "source": "GitHub GraphQL repository inventory"
+        }
+      ],
+      "from": "quaestor-ledger/.github",
+      "id": "sha256:c07f0f9b54be592f315c83a05c67958b604e3b78b25bf25d2fac276bc2121cce",
+      "notes": "Organization .github policy and community-health defaults govern this sibling repository.",
+      "required": true,
+      "scope": "organization",
+      "status": "declared",
+      "to": "quaestor-ledger/quaestor-ledger.github.io",
+      "type": "governs"
+    },
+    {
+      "confidence": 0.95,
+      "evidence": [
+        {
+          "kind": "repository-name",
+          "value": "quaestor-ledger.github.io"
+        }
+      ],
+      "from": "quaestor-ledger/quaestor-ledger.github.io",
+      "id": "sha256:1d0454703609aff757664ccb8f53e91d6446ed6dc807b71fee7a1890645b111e",
+      "notes": "The conventional *.github.io repository documents the organization profile.",
+      "required": false,
+      "scope": "organization",
+      "status": "inferred",
+      "to": "quaestor-ledger/.github",
+      "type": "documents"
+    }
+  ],
+  "repositories": [
+    {
+      "archived": false,
+      "default_branch": "main",
+      "fork": false,
+      "full_name": "quaestor-ledger/.github",
+      "github_id": "1324047795",
+      "name": ".github",
+      "owner": "quaestor-ledger",
+      "roles": [
+        "community-health",
+        "governance",
+        "relationship-registry"
+      ],
+      "source": "github-graphql-api",
+      "url": "https://github.com/quaestor-ledger/.github",
+      "visibility": "public"
+    },
+    {
+      "archived": false,
+      "default_branch": "main",
+      "fork": false,
+      "full_name": "quaestor-ledger/quaestor-ledger-e2e",
+      "github_id": "1311226628",
+      "name": "quaestor-ledger-e2e",
+      "owner": "quaestor-ledger",
+      "roles": [
+        "end-to-end-tests"
+      ],
+      "source": "github-graphql-api",
+      "url": "https://github.com/quaestor-ledger/quaestor-ledger-e2e",
+      "visibility": "public"
+    },
+    {
+      "archived": false,
+      "default_branch": "main",
+      "fork": false,
+      "full_name": "quaestor-ledger/quaestor-ledger.github.io",
+      "github_id": "1304025758",
+      "name": "quaestor-ledger.github.io",
+      "owner": "quaestor-ledger",
+      "roles": [
+        "documentation-site"
+      ],
+      "source": "github-graphql-api",
+      "url": "https://github.com/quaestor-ledger/quaestor-ledger.github.io",
+      "visibility": "public"
+    }
+  ],
+  "schema_version": 1,
+  "unresolved_hints": []
+}
