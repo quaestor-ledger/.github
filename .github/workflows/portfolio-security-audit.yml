@@ -1,0 +1,85 @@
+name: portfolio security audit
+
+on:
+  pull_request:
+    paths:
+      - .github/workflows/portfolio-security-audit.yml
+      - scripts/audit-org.mjs
+      - tests/**
+      - package.json
+      - docs/portfolio-audit.md
+      - audits/**
+  push:
+    branches: [main]
+    paths:
+      - .github/workflows/portfolio-security-audit.yml
+      - scripts/audit-org.mjs
+      - tests/**
+      - package.json
+      - docs/portfolio-audit.md
+      - audits/**
+  schedule:
+    - cron: "23 8 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: portfolio-security-audit-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  contract:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - name: Check out governance repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Require supported Node.js runtime
+        shell: bash
+        run: |
+          set -euo pipefail
+          node --version
+          node -e "const major = Number(process.versions.node.split('.')[0]); if (major < 20) process.exit(1)"
+      - name: Run auditor contract tests
+        run: npm test
+
+  live-audit:
+    if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
+    needs: contract
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    env:
+      ORG_AUDIT_TOKEN: ${{ secrets.ORG_AUDIT_TOKEN }}
+    steps:
+      - name: Check out governance repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Require private-organization audit credential
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [[ -z "${ORG_AUDIT_TOKEN:-}" ]]; then
+            echo "::error::ORG_AUDIT_TOKEN is required; a repository-scoped GITHUB_TOKEN cannot prove 13-repository private-org coverage"
+            exit 1
+          fi
+      - name: Audit all repositories and workflow trust boundaries
+        run: >-
+          node scripts/audit-org.mjs
+          --org quaestor-ledger
+          --expected-repositories 13
+          --output-dir audit-output
+      - name: Publish human-readable evidence
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [[ -f audit-output/quaestor-ledger-audit.md ]]; then
+            cat audit-output/quaestor-ledger-audit.md >> "$GITHUB_STEP_SUMMARY"
+          else
+            echo "Portfolio audit did not produce a report." >> "$GITHUB_STEP_SUMMARY"
+          fi
