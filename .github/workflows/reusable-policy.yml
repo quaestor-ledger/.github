@@ -6,6 +6,10 @@ on:
 permissions:
   contents: read
 
+concurrency:
+  group: quaestor-policy-${{ github.repository }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   validate-caller:
     runs-on: ubuntu-latest
