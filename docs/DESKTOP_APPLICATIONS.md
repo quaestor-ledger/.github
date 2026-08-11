@@ -63,7 +63,7 @@ Shared schemas, clients, route fixtures, sample books, migrations, and conforman
 
 The Flutter repository records the companion and native-runner gap in [`COMPANION_DESKTOP.md`](https://github.com/quaestor-ledger/quaestor-flutter/blob/main/COMPANION_DESKTOP.md), introduced through [PR #4](https://github.com/quaestor-ledger/quaestor-flutter/pull/4).
 
-Central toolkit assignments: [`rust-desktop-strategies.md`](https://github.com/ORESoftware/project-registry/blob/main/docs/rust-desktop-strategies.md).
+Central toolkit assignments are recorded in the opaque `approved-private-registry` under the desktop-application strategy; no private repository locator is published here.
 
 ## Project routing
 
