@@ -16,13 +16,13 @@ GitHub owns source, pull requests, checks, releases, deployment manifests, and r
 | Repository | Primary responsibility | Planning lane |
 | --- | --- | --- |
 | `.github` | Organization governance, contribution policy, security policy, repository map, and shared automation guidance | Organization operations and documentation |
-| `quaestor-interfaces` | Canonical financial schemas, wire contracts, generated interfaces, SQL and money representations | Contract compatibility and artifact certification |
+| `quaestor-interfaces` | Canonical financial schemas, wire contracts, generated interfaces, SQL, money representations, and versioned pricing-policy/decision contracts | Contract compatibility and artifact certification |
 | `quaestor-clients` | Generated and hand-maintained client SDKs plus Zed package/runtime routing | SDK parity, package publication, and consumer compatibility |
-| `quaestor-ledger-server.rs` | Authoritative ledger API, Shared Auth introspection, Quaestor-owned tenant grants, provider ingestion, and financial invariants | Production billing hardening and launch gates |
+| `quaestor-ledger-server.rs` | Authoritative ledger API, Shared Auth introspection, tenant grants, provider ingestion, pricing evaluation, campaign/referral lifecycle, atomic redemption, and financial invariants | Production billing hardening and launch gates |
 | `quaestor-web-server.rs` | Browser-facing billing application, RLS enforcement, step-up ceremony consumption, and deployment wiring | Web rollout, auth assurance, and browser evidence |
-| `quaestor-executor` | Non-custodial payment execution under merchant-owned provider credentials | Execution safety, idempotency, and provider controls |
+| `quaestor-executor` | Non-custodial payment execution under merchant-owned provider credentials, bound to immutable Quaestor price decisions or invoices | Execution safety, idempotency, and provider controls |
 | `quaestor-ledger-sync` | Quaestor-owned replication envelope and adapters over approved synchronization primitives | Sync protocol, offline behavior, and artifact adoption |
-| `quaestor-ledger-e2e` | Cross-driver, cross-runtime, release, security, and integration evidence | Release gates and production smoke evidence |
+| `quaestor-ledger-e2e` | Cross-driver, cross-runtime, pricing replay/concurrency, remote-provider evidence orchestration, release, security, and integration evidence | Release gates and production smoke evidence |
 | `quaestor-ledger-mcp-server.rs` | Agent/MCP access with strict URL, identifier, tenant, and command validation | Agent surface safety and integration contracts |
 | `quaestor-flutter` | Mobile, desktop, and web client application | Client startup safety, mobile background behavior, and UX rollout |
 | `quaestor-infra` | Kubernetes, secrets, observability, migrations, deployment, rollback, and environment policy | Production deployment and operational readiness |
@@ -51,6 +51,8 @@ Customer billing remains gated until all of the following are complete and evide
 4. Wrong-tenant, revoked-session, stale-AAL2, authority-outage, migration, and rollback tests pass.
 5. Read-only cross-repository CI credentials are configured where real private-crate or private-package integration is required.
 6. GitHub Actions billing/spending limits permit required workflows to allocate runners; checks rejected before runner allocation are not evidence of correctness.
+7. The [programmable-pricing launch contract](docs/PROGRAMMABLE_PRICING.md) is implemented: versioned policies and eligibility facts, explainable decisions, promotions and referrals, atomic redemption, immutable invoice/checkout integration, historical simulation, and controlled rollout all have exact-head evidence.
+8. Every production-enabled payment route meets the [remote-provider E2E and certification contract](docs/REMOTE_PAYMENT_PROVIDER_TESTING.md), with fresh exact-head sandbox or provider-certification evidence and no required capability hidden by a skipped test.
 
 ## Pull request and conflict policy
 
