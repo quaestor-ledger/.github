@@ -10,6 +10,18 @@ quaestor-ledger maintains billing, ledger, accounting, and financial-integration
 
 Each active repository must document purpose, ownership, maturity, supported environments, development and test commands, authoritative ledger and interface formats, release and rollback procedures, compatibility policy, and GitHub Project/Linear links. Financial components should also document currency and precision, posting invariants, idempotency, reconciliation, audit trails, authorization, retention, settlement states, reversals, and failure recovery.
 
+## Commercial-policy contract
+
+Pricing, promotions, promo codes, referrals, discounts, credits, commissions, and revenue sharing must follow the [programmable-pricing architecture](PROGRAMMABLE_PRICING.md). Published policies and price decisions are immutable and effective-dated; stacking, currency, rounding, tax phase, limits, budgets, eligibility, and reversal behavior are explicit. Common supported offers must not require core-ledger changes, application deployments, or historical rewrites.
+
+Production checkout and collection derive economic amounts from a server-owned immutable price decision or finalized invoice. Unchecked caller-supplied amounts are never an authoritative production pricing source. New policies require validation, historical simulation, approval, shadow/canary evidence, monitoring, and a fail-closed pause path.
+
+## Remote-provider test contract
+
+Production payment routes must follow the [remote payment-provider E2E and certification architecture](REMOTE_PAYMENT_PROVIDER_TESTING.md). Pull requests use deterministic contracts and adversarial simulators; scheduled and release gates use official sandboxes or provisioned certification environments. Missing credentials or unsupported provider capabilities are explicit blockers, not successful skips. Consumer/P2P automation and autonomous live-money movement are forbidden.
+
+Wallets, rails, processors, and acquirer products keep distinct capability identities. Every enabled route must prove that its exact amount and currency originate from an immutable Quaestor decision or invoice and reconcile to balanced ledger entries exactly once across webhook duplication, reordering, loss, timeout, refund, dispute, and recovery.
+
 ## Change workflow
 
 1. Anchor work in an issue, Linear item, or documented maintenance objective.
