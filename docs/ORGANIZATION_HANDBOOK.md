@@ -33,7 +33,9 @@ Wallets, rails, processors, and acquirer products keep distinct capability ident
 
 ## Evidence, security, and documentation
 
-Pull requests should include reproducible commands, synthetic fixtures, expected and observed postings, invariant and reconciliation evidence, negative-path coverage, documentation updates, and CI or local-equivalent evidence. Never commit credentials, real financial records, signing keys, or sensitive logs. Follow `SECURITY.md` for private reporting. Keep examples sanitized, precision and currency semantics explicit, compatibility matrices current, and important accounting, security, and operational decisions recorded.
+Pull requests should include reproducible commands, synthetic fixtures, expected and observed postings, invariant and reconciliation evidence, negative-path coverage, documentation updates, and CI or local-equivalent evidence. Never commit plaintext credentials, decrypted environment files, private decryption identities, real financial records, signing keys, or sensitive logs. Follow `SECURITY.md` for private reporting. Keep examples sanitized, precision and currency semantics explicit, compatibility matrices current, and important accounting, security, and operational decisions recorded.
+
+Reviewed SOPS ciphertext may be tracked only as `env/enc/*.env.enc`; corresponding plaintext is materialized only as ignored, restrictive-permission `env/dec/*.env` or directly into an authorized process. Repositories adopting this pattern must pin `sops` and `just` through Nix, restrict `.sops.yaml` recipients by provider/environment, keep decryption identities outside Git, expose explicit edit/encrypt/decrypt/run/check/clean recipes, prevent implicit shell-entry decryption, and gate decryption to protected trusted workflows. The complete contract is defined in [Remote payment-provider E2E and certification](REMOTE_PAYMENT_PROVIDER_TESTING.md#encrypted-environment-file-contract).
 
 ## Planning ownership
 

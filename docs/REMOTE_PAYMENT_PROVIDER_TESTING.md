@@ -124,6 +124,34 @@ Provider timestamps are evidence, not the sole order authority. State transition
 
 Secrets are provider-, environment-, and test-lane-specific. Workflows use protected environments, short-lived federation where supported, least-privilege accounts, secret masking, egress allowlists, and concurrency locks where a provider sandbox is shared. Forked pull requests and untrusted code never receive remote credentials. Logs, fixtures, traces, and artifacts contain no raw PAN, bank credentials, API secrets, signing keys, personal account data, or reusable wallet tokens.
 
+## Encrypted environment-file contract
+
+Repositories may commit SOPS ciphertext using this exact boundary:
+
+```text
+env/enc/*.env.enc   # encrypted, reviewable, may be tracked
+env/dec/*.env       # decrypted, local/ephemeral, must never be tracked
+```
+
+This permission applies to valid authenticated SOPS ciphertext, not plaintext with an encrypted-looking filename, reversible encoding, or an archive containing plaintext. The SOPS MAC must verify before use. Private age identities, KMS credentials, cloud access tokens, and other decryption material never enter the repository; only public recipients, KMS resource identifiers, and non-secret policy may be tracked.
+
+Each adopting repository must provide:
+
+- a reviewed `.sops.yaml` creation rule restricted to `^env/enc/.*\.env\.enc$`, using provider/environment-specific age recipients or KMS keys rather than one organization-wide decryption identity;
+- `env/dec/.gitignore` and a root ignore rule that deny every decrypted `.env` file while allowing the ignore policy itself to remain tracked;
+- a pinned Nix development shell and lock file that provide compatible `sops` and `just` versions;
+- a common `just` interface for `env-edit`, `env-encrypt`, `env-decrypt`, `env-run`, `env-clean`, and `env-check`, with exact profile arguments and no implicit production default;
+- restrictive creation semantics (`umask 077` and file mode `0600`) for any decrypted file; and
+- CI checks that reject tracked `env/dec` content, plaintext secrets, malformed/non-SOPS `env/enc` files, unknown profiles, unreviewed recipient changes, and encrypted files whose path does not match the creation rule.
+
+`env-run` should prefer process-scoped decryption such as `sops exec-env` so plaintext does not reach disk. When a provider tool requires a file, `env-decrypt` may materialize only the requested profile at `env/dec/<profile>.env`, and the exact scoped workflow must remove it on normal completion, failure, and cancellation. Nix or direnv startup must not automatically decrypt or export credentials merely because a developer enters the repository.
+
+Files are split by provider, product, lane, and environment—for example a Stripe sandbox profile is not combined with a PayPal certification or production profile. Names reveal no secret value or customer identity. Dotenv keys use a reviewed canonical schema; unknown or duplicate variables fail validation. Rotation creates a newly encrypted revision and updates expiry/owner metadata without exposing the value in a pull request.
+
+In CI, ciphertext may be checked out by untrusted jobs, but decryption authority is available only to the exact protected L2/L3/L4 environment, trusted ref, reviewed workflow, and minimal step that needs it. Prefer GitHub OIDC to a narrowly scoped KMS policy; if an age identity must be injected, store it in the protected environment rather than another repository file. A pull request that changes `.sops.yaml`, recipients, KMS identifiers, encrypted provider profiles, Nix inputs, or secret-handling recipes receives security-owner review.
+
+SOPS protects repository-at-rest confidentiality; it does not replace provider scoping, environment protection, log redaction, rotation, revocation, audit, egress controls, or the prohibition on raw payment credentials and customer data.
+
 ## Provider coverage matrix
 
 Legend: **D** direct merchant API; **P** provisioned/partner/certification access; **W** wallet/tokenization; **R** rail or scheme. Access is recorded per product and country; this table does not promise a capability that the contracted account lacks.
