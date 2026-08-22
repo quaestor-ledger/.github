@@ -1,0 +1,138 @@
+{
+  "schemaVersion": 1,
+  "organization": "quaestor-ledger",
+  "auditedDate": "2026-08-10",
+  "sourceRepositoryCoverage": {
+    "expected": 13,
+    "observed": 13,
+    "complete": true
+  },
+  "testOrganizationCoverage": {
+    "organization": "quaestor-ledger-test",
+    "observedRepositories": 17,
+    "specializedRepositories": 16,
+    "governanceRepositories": 1
+  },
+  "adminControlCoverage": {
+    "organizationRulesets": "not-observable-http-403",
+    "defaultBranchProtection": "not-observable-http-403",
+    "organizationActionsPolicy": "not-observable-http-403"
+  },
+  "repositories": [
+    {
+      "name": ".github",
+      "role": "organization governance",
+      "evidence": ["reusable policy", "baseline policy", "public privacy", "repository relationships"],
+      "assessment": "strong inherited policy; portfolio-wide evidence aggregation added by this change"
+    },
+    {
+      "name": "quaestor-executor",
+      "role": "fenced payment instruction executor",
+      "evidence": ["Rust lockfile", "source tests", "formal model", "authorization and fencing documentation"],
+      "assessment": "existing PR #6 hardens the formal CI gate; no duplicate change opened"
+    },
+    {
+      "name": "quaestor-clients",
+      "role": "polyglot SDK fleet",
+      "evidence": ["Dependabot", "required client matrix", "Zed package workflows", "polyglot workflow"],
+      "assessment": "broad language coverage; committed generated archives and large blobs require cleanup"
+    },
+    {
+      "name": "quaestor-interfaces",
+      "role": "schemas, generated interfaces, and telemetry contracts",
+      "evidence": ["CI", "Dependabot", "Rust and Dart locks", "fixtures", "Dart telemetry tests"],
+      "assessment": "well tested contract source"
+    },
+    {
+      "name": "quaestor-infra",
+      "role": "Terraform, Kubernetes, Argo CD, Cloudflare, and tenancy",
+      "evidence": ["CI", "Cloudflare drift", "SECURITY.md", "network policy", "resource quotas"],
+      "assessment": "strong declarative infrastructure controls; recovery suite added to test-fleet plan"
+    },
+    {
+      "name": "quaestor-flutter",
+      "role": "mobile and desktop client",
+      "evidence": ["Flutter CI", "Android release", "iOS build", "Opto-Sync app/background/web lanes"],
+      "assessment": "broad platform coverage; Actions billing is an external evidence blocker on active work"
+    },
+    {
+      "name": "quaestor-monorepo",
+      "role": "application superproject",
+      "evidence": ["immutable gitlinks", "CI", "Zed topology", "submodule contract tests"],
+      "assessment": "apps-only topology; infrastructure remains outside the superproject"
+    },
+    {
+      "name": "quaestor-ledger-sync",
+      "role": "offline and cross-runtime synchronization",
+      "evidence": ["Rust CI", "protocol contract", "Opto-Sync resilience", "Rust/Dart/TypeScript tests"],
+      "assessment": "strong protocol and adapter evidence"
+    },
+    {
+      "name": "quaestor-web-server.rs",
+      "role": "HTML/HTMX web application",
+      "evidence": ["Rust and TypeScript locks", "browser E2E", "Shared-Auth contract", "Dependabot", "SECURITY.md"],
+      "assessment": "mature multi-lane CI and security documentation"
+    },
+    {
+      "name": "quaestor-ledger-e2e",
+      "role": "cross-browser product E2E",
+      "evidence": ["Playwright", "Puppeteer", "Selenium", "shared scenarios", "browser harness contract"],
+      "assessment": "real executable browser harness"
+    },
+    {
+      "name": "quaestor-ledger-server.rs",
+      "role": "ledger API and accounting core",
+      "evidence": ["locked Rust builds", "formal auth models", "financial-operation audit", "Kubernetes network policy", "image workflow"],
+      "assessment": "strong core controls; private integration and database exact-head evidence remain release gates"
+    },
+    {
+      "name": "quaestor-ledger-mcp-server.rs",
+      "role": "MCP interface",
+      "evidence": ["Rust lockfile", "input-security contract", "web smoke", "routing E2E", "tests"],
+      "assessment": "dedicated input and routing security lanes"
+    },
+    {
+      "name": "quaestor-ledger.github.io",
+      "role": "Astro marketing site",
+      "evidence": ["Astro build", "Pages deploy", "Playwright", "Puppeteer", "distribution contract"],
+      "assessment": "public site has build and browser coverage"
+    }
+  ],
+  "findings": [
+    {
+      "id": "QL-AUDIT-001",
+      "severity": "high",
+      "scope": "quaestor-clients",
+      "title": "Generated package archives and blobs above 10 MiB are committed",
+      "status": "open"
+    },
+    {
+      "id": "QL-AUDIT-002",
+      "severity": "high",
+      "scope": "quaestor-ledger-test",
+      "title": "Tenant isolation, webhook replay defense, and migration recovery lack dedicated repositories",
+      "status": "addressed-by-draft-pr-164"
+    },
+    {
+      "id": "QL-AUDIT-003",
+      "severity": "medium",
+      "scope": "quaestor-ledger-test",
+      "title": "Generated test plans are not uniformly executable",
+      "status": "partially-addressed-by-draft-pr-3"
+    },
+    {
+      "id": "QL-AUDIT-004",
+      "severity": "medium",
+      "scope": "quaestor-executor",
+      "title": "Executor formal CI hardening is pending exact-head validation",
+      "status": "existing-draft-pr-6"
+    },
+    {
+      "id": "QL-AUDIT-005",
+      "severity": "control-coverage",
+      "scope": "organization administration",
+      "title": "Rulesets, branch protection, and Actions policy are not observable with the current integration",
+      "status": "blocked-until-admin-read-credential"
+    }
+  ]
+}
