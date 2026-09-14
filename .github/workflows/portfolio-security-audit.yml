@@ -73,7 +73,7 @@ jobs:
         run: >-
           node scripts/audit-org.mjs
           --org quaestor-ledger
-          --expected-repositories 15
+          --expected-repositories 27
           --output-dir audit-output
       - name: Publish human-readable evidence
         if: always()
