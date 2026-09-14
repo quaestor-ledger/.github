@@ -48,12 +48,10 @@ jobs:
         run: npm test
 
   live-audit:
-    if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
+    if: github.event_name != 'pull_request' && (github.event_name == 'schedule' || github.event_name == 'workflow_dispatch')
     needs: contract
     runs-on: ubuntu-24.04
     timeout-minutes: 30
-    env:
-      ORG_AUDIT_TOKEN: ${{ secrets.ORG_AUDIT_TOKEN }}
     steps:
       - name: Check out governance repository
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -61,17 +59,21 @@ jobs:
           persist-credentials: false
       - name: Require private-organization audit credential
         shell: bash
+        env:
+          ORG_AUDIT_TOKEN: ${{ secrets.ORG_AUDIT_TOKEN }}
         run: |
           set -euo pipefail
           if [[ -z "${ORG_AUDIT_TOKEN:-}" ]]; then
-            echo "::error::ORG_AUDIT_TOKEN is required; a repository-scoped GITHUB_TOKEN cannot prove 13-repository private-org coverage"
+            echo "::error::ORG_AUDIT_TOKEN is required; a repository-scoped GITHUB_TOKEN cannot prove private-org coverage"
             exit 1
           fi
       - name: Audit all repositories and workflow trust boundaries
+        env:
+          ORG_AUDIT_TOKEN: ${{ secrets.ORG_AUDIT_TOKEN }}
         run: >-
           node scripts/audit-org.mjs
           --org quaestor-ledger
-          --expected-repositories 13
+          --expected-repositories 15
           --output-dir audit-output
       - name: Publish human-readable evidence
         if: always()
