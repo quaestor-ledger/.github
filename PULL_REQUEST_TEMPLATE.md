@@ -43,6 +43,14 @@ Describe the problem and user-visible behavior, why this repository owns the cha
 
 Provide exact commands, checks, fixtures, test-organization run links, migration and drift results, manual verification, known limitations, and an explanation for every check that could not run.
 
+## Exact-head verification and approvals
+
+- [ ] The full source-head SHA and target branch are recorded with links to all required CI jobs; no pass is inferred from an unrelated commit, branch, or skipped/cancelled job.
+- [ ] Every claimed test actually executed assertions. A zero-step runner/admission failure is recorded as **not executed**, not as test success.
+- [ ] Source-org required checks and branch protection still pass even when a byte-verified private test-carrier mirror supplies additional evidence.
+- [ ] Review approval is recorded from an independent authorized reviewer, with required ownership and security reviews satisfied; a green test suite or GitHub's mergeable flag does not itself approve the change.
+- [ ] For money/tenant/security or deployment changes, fail-closed, replay, least-privilege, and rollback evidence are linked; production promotion requires a distinct authorization.
+
 ## Merge safety
 
 - [ ] Conflicts were resolved semantically using both sides and relevant history.
