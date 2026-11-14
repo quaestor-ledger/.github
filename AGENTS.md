@@ -77,36 +77,21 @@ This organization policy overrides generic feature-branch and worktree defaults 
 - Preserve unrelated in-progress changes and never overwrite another agent's work. If safe ownership of overlapping files cannot be established, pause that overlapping edit and coordinate before continuing.
 <!-- ore-primary-branch-policy:end -->
 
-## Git and history policy
+## Append-only history and explicit staging
 
-Prefer merges over rewrites. The rule is: avoid git rebase in favor of git merge.
-A merge records what actually happened, and the automation across this fleet reads
-history to decide what has already landed — rewriting that history makes the
-judgement wrong, and it makes two checkouts of the same work look unrelated.
+The mandatory semantic conflict-resolution and hard-denylist sections above govern
+Git operations. Merge commits preserve the history used by fleet automation to
+identify work already landed; rewriting history breaks that evidence.
 
-On any conflict, resolve it semantically. Read at least 3–10 relevant commits of
-surrounding history on both sides before deciding, then merge the two intents.
-Picking a side is not a resolution; it silently discards whichever half was
-dropped, and the loss is invisible afterwards because the conflict marker is gone.
+Stage explicit paths. Never use `git add -A`: unrelated work and secrets must
+remain outside the change.
 
-The commands below destroy work that no remote has ever seen, so an agent does not
-run them without explicit human permission:
+If existing stash content needs preservation, create an additive rescue branch
+pointing to it after inspection; never pop or delete the stash.
 
-- `git stash` — stashes live in no remote and appear in neither `git status` nor
-  ahead/behind counts, so a repository holding thousands of stashed lines reports a
-  clean tree to every tool that scans for unlanded work. Use a `wip/<what-it-is>`
-  branch instead. If you find someone else's stash, make it reachable with
-  `git branch rescue/<id> refs/stash` — never pop it.
-- `git reset` — moves the branch out from under committed work.
-- `git clean` — deletes untracked files that have never been pushed anywhere.
-- `git filter-repo` — rewrites every commit id in the repository, which breaks
-  every pin, submodule pointer and open pull request that referenced the old ones.
-
-Stage explicit paths. Never `git add -A`: most checkouts here carry someone else's
-work in progress, and `-A` is how that — plus secrets — gets committed by accident.
-
-Never report work as landed while it is only on local disk. A change is done when
-it is committed, pushed, and open as a pull request; compiling is not landing.
+A local build is not remote delivery. Report a branch as delivered only after
+authoritative evidence confirms it is pushed and represented by a pull request.
+An open pull request is not evidence that the change has merged.
 
 ## Repository-local Git worktrees
 
