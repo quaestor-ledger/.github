@@ -9,7 +9,7 @@ import { auditSnapshot, markdownReport } from './report.mjs';
 function parseArgs(argv) {
   const options = {
     org: process.env.GITHUB_REPOSITORY_OWNER || 'quaestor-ledger',
-    expectedRepositories: 13,
+    expectedRepositories: 28,
     outputDir: 'artifacts/portfolio-audit',
     apiBase: process.env.GITHUB_API_URL || 'https://api.github.com',
     snapshot: null,
