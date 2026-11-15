@@ -4,11 +4,11 @@
 
 ## Coverage contract
 
-The live job fails unless its credential can see exactly 13 repositories. This is deliberate:
+The live job fails unless its credential can see exactly 28 repositories. This is deliberate:
 
 - a repository-scoped `GITHUB_TOKEN` must not produce a false-green private-organization audit;
 - losing access to one private repository is a coverage failure;
-- adding a fourteenth repository requires an explicit review and count ratchet in the workflow; and
+- adding a twenty-ninth repository requires an explicit review and count ratchet in the workflow; and
 - a truncated recursive Git tree or missing workflow body is a failure, not a skipped check.
 
 ## Credential configuration
